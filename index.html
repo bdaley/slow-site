@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Test Website - Intentionally Slow</title>
+    <meta name="description" content="A website intentionally built with multiple performance problems for testing and education purposes.">
+    
+    <!-- 
+        PERFORMANCE ANTI-PATTERN #1: Multiple render-blocking CSS files in <head>
+        All CSS files loaded synchronously, blocking page rendering
+        Files are not minified and not concatenated
+    -->
+    <link rel="stylesheet" href="vendor/bootstrap.css">
+    <link rel="stylesheet" href="vendor/font-awesome.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/unused-styles.css">  <!-- UNUSED! Wasting bandwidth -->
+    
+    <!-- 
+        PERFORMANCE ANTI-PATTERN #2: Inline CSS in <head> (even more render blocking)
+    -->
+    <style>
+        /* This inline CSS adds even more render-blocking content */
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    
+    <!-- 
+        PERFORMANCE ANTI-PATTERN #3: Multiple render-blocking JavaScript files in <head>
+        WITHOUT async or defer attributes!
+        These block HTML parsing and DOM construction
+    -->
+    <script src="vendor/jquery.js"></script>  <!-- 278KB unminified! -->
+    <script src="js/utils.js"></script>
+    <script src="js/carousel.js"></script>  <!-- NOT EVEN USED ON THIS PAGE! -->
+    <script src="js/analytics.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/unused-script.js"></script>  <!-- UNUSED! Pure waste -->
+    
+    <!-- Even more inline blocking JavaScript -->
+    <script>
+        // This script runs before the page loads, blocking rendering
+        console.log('Head script executing - blocking page render!');
+        var startTime = performance.now();
+        
+        // Simulate some heavy computation
+        function heavyComputation() {
+            var result = 0;
+            for (var i = 0; i < 1000000; i++) {
+                result += Math.sqrt(i);
+            }
+            return result;
+        }
+        
+        heavyComputation();
+        console.log('Heavy computation completed in:', (performance.now() - startTime).toFixed(2), 'ms');
+    </script>
+</head>
+<body>
+    <!-- Loading overlay (not actually needed) -->
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <!-- 
+        HEADER SECTION
+    -->
+    <header class="site-header">
+        <div class="header-container">
+            <a href="#" class="site-logo">
+                <i class="logo-icon">⚡</i>
+                <h1 class="logo-text">SlowSite</h1>
+            </a>
+            
+            <nav class="main-navigation">
+                <ul class="nav-menu">
+                    <li class="nav-menu-item active">
+                        <a href="#hero" class="nav-menu-link">Home</a>
+                    </li>
+                    <li class="nav-menu-item">
+                        <a href="#about" class="nav-menu-link">About</a>
+                    </li>
+                    <li class="nav-menu-item">
+                        <a href="#features" class="nav-menu-link">Features</a>
+                    </li>
+                    <li class="nav-menu-item">
+                        <a href="#gallery" class="nav-menu-link">Gallery</a>
+                    </li>
+                    <li class="nav-menu-item">
+                        <a href="#contact" class="nav-menu-link">Contact</a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                <span class="mobile-menu-toggle-bar"></span>
+                <span class="mobile-menu-toggle-bar"></span>
+                <span class="mobile-menu-toggle-bar"></span>
+            </button>
+        </div>
+    </header>
+    
+    <!-- 
+        HERO SECTION
+        PERFORMANCE ANTI-PATTERN #4: Large hero image with loading="eager"
+        Image is 3200x1800 but displayed much smaller
+        Blocks initial page rendering
+    -->
+    <section id="hero" class="hero-section">
+        <img src="images/micheile-henderson-DlYmgwb_9Gw-unsplash.jpg" 
+             alt="Hero background" 
+             loading="eager"
+             width="3200" 
+             height="1800"
+             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+        
+        <div class="hero-content">
+            <h1 class="hero-title animated fade-in-up">Welcome to SlowSite</h1>
+            <p class="hero-subtitle animated fade-in-up delay-1">The Slowest Website on the Internet</p>
+            <a href="#about" class="hero-button animated fade-in-up delay-2">Learn More</a>
+        </div>
+    </section>
+    
+    <!-- 
+        ABOUT SECTION
+    -->
+    <section id="about" class="about-section section">
+        <div class="container">
+            <h2 class="section-title animated fade-in">About This Website</h2>
+            <div class="about-content">
+                <p class="about-text animated fade-in-up">
+                    This website is intentionally designed to demonstrate multiple web performance anti-patterns.
+                    It includes render-blocking resources, unoptimized images, excessive HTTP requests, 
+                    and unused code - all common issues that slow down real websites.
+                </p>
+                <p class="about-text animated fade-in-up delay-1">
+                    By studying this site's poor performance, developers can learn to identify and fix
+                    similar issues in their own projects. Every performance problem here is deliberate
+                    and serves as an example of what NOT to do in production websites.
+                </p>
+                <p class="about-text animated fade-in-up delay-2">
+                    Use browser DevTools to inspect the Network tab, Performance tab, and Lighthouse
+                    to see all the performance issues in action!
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 
+        FEATURES SECTION
+    -->
+    <section id="features" class="features-section section">
+        <div class="container">
+            <h2 class="section-title animated fade-in">Performance Problems Featured</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card animated fade-in-up">
+                    <div class="feature-icon">🐌</div>
+                    <h3 class="feature-title">Render-Blocking Resources</h3>
+                    <p class="feature-description">
+                        Multiple CSS and JavaScript files loaded synchronously in the head,
+                        blocking page rendering and delaying First Contentful Paint.
+                    </p>
+                </div>
+                
+                <div class="feature-card animated fade-in-up delay-1">
+                    <div class="feature-icon">🖼️</div>
+                    <h3 class="feature-title">Unoptimized Images</h3>
+                    <p class="feature-description">
+                        Oversized images in wrong formats, scaled by the browser, with loading="eager"
+                        and no modern format alternatives like WebP or AVIF.
+                    </p>
+                </div>
+                
+                <div class="feature-card animated fade-in-up delay-2">
+                    <div class="feature-icon">📦</div>
+                    <h3 class="feature-title">Unused Code</h3>
+                    <p class="feature-description">
+                        Entire CSS and JavaScript files loaded but not used, wasting bandwidth
+                        and increasing parsing time without providing any value.
+                    </p>
+                </div>
+                
+                <div class="feature-card animated fade-in-up">
+                    <div class="feature-icon">🔗</div>
+                    <h3 class="feature-title">Excessive HTTP Requests</h3>
+                    <p class="feature-description">
+                        10+ separate CSS and JavaScript files instead of bundling, creating
+                        overhead with multiple round trips to the server.
+                    </p>
+                </div>
+                
+                <div class="feature-card animated fade-in-up delay-1">
+                    <div class="feature-icon">📝</div>
+                    <h3 class="feature-title">Unminified Resources</h3>
+                    <p class="feature-description">
+                        All CSS and JavaScript files are verbose and unminified, with extensive
+                        comments and whitespace that increase file sizes unnecessarily.
+                    </p>
+                </div>
+                
+                <div class="feature-card animated fade-in-up delay-2">
+                    <div class="feature-icon">🌐</div>
+                    <h3 class="feature-title">No CDN</h3>
+                    <p class="feature-description">
+                        Third-party libraries like jQuery and Bootstrap served locally instead
+                        of from CDNs, missing caching benefits and geographic distribution.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 
+        GALLERY SECTION
+        PERFORMANCE ANTI-PATTERN #5: Multiple large images with loading="eager"
+        All images are PNG format (wrong for photos!) and oversized (3000x2000)
+    -->
+    <section id="gallery" class="gallery-section section">
+        <div class="container">
+            <h2 class="section-title animated fade-in">Image Gallery</h2>
+            <p style="text-align: center; margin-bottom: 2rem; color: #666;">
+                These images are all 3000x2000 pixels (9MB+ combined), saved as PNG instead of JPG,
+                and loaded with loading="eager" even though they're below the fold!
+            </p>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item animated zoom-in">
+                    <img src="images/gallery-1.png" 
+                         alt="Gallery image 1" 
+                         class="gallery-image"
+                         loading="eager"
+                         width="3000"
+                         height="2000">
+                    <div class="gallery-overlay">
+                        <p class="gallery-caption">Image 1</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item animated zoom-in delay-1">
+                    <img src="images/gallery-2.png" 
+                         alt="Gallery image 2" 
+                         class="gallery-image"
+                         loading="eager"
+                         width="3000"
+                         height="2000">
+                    <div class="gallery-overlay">
+                        <p class="gallery-caption">Image 2</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item animated zoom-in delay-2">
+                    <img src="images/gallery-3.png" 
+                         alt="Gallery image 3" 
+                         class="gallery-image"
+                         loading="eager"
+                         width="3000"
+                         height="2000">
+                    <div class="gallery-overlay">
+                        <p class="gallery-caption">Image 3</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item animated zoom-in">
+                    <img src="images/gallery-4.png" 
+                         alt="Gallery image 4" 
+                         class="gallery-image"
+                         loading="eager"
+                         width="3000"
+                         height="2000">
+                    <div class="gallery-overlay">
+                        <p class="gallery-caption">Image 4</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item animated zoom-in delay-1">
+                    <img src="images/gallery-5.png" 
+                         alt="Gallery image 5" 
+                         class="gallery-image"
+                         loading="eager"
+                         width="3000"
+                         height="2000">
+                    <div class="gallery-overlay">
+                        <p class="gallery-caption">Image 5</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item animated zoom-in delay-2">
+                    <img src="images/gallery-6.png" 
+                         alt="Gallery image 6" 
+                         class="gallery-image"
+                         loading="eager"
+                         width="3000"
+                         height="2000">
+                    <div class="gallery-overlay">
+                        <p class="gallery-caption">Image 6</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 
+        CONTACT SECTION
+    -->
+    <section id="contact" class="contact-section section">
+        <div class="container">
+            <h2 class="section-title animated fade-in">Contact Us</h2>
+            <p style="text-align: center; margin-bottom: 2rem; color: #666;">
+                This is a demo contact form. No data is actually submitted.
+            </p>
+            
+            <form class="contact-form animated fade-in-up" action="#" method="post">
+                <div class="form-group">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" 
+                           id="name" 
+                           name="name" 
+                           class="form-control" 
+                           placeholder="Enter your name"
+                           required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" 
+                           id="email" 
+                           name="email" 
+                           class="form-control" 
+                           placeholder="Enter your email"
+                           required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea id="message" 
+                              name="message" 
+                              class="form-control" 
+                              placeholder="Enter your message"
+                              required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-button">Send Message</button>
+            </form>
+        </div>
+    </section>
+    
+    <!-- 
+        FOOTER SECTION
+    -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3 class="footer-column-title">About SlowSite</h3>
+                    <p class="footer-column-description">
+                        An educational website demonstrating common web performance anti-patterns.
+                        Built intentionally slow for testing and learning purposes.
+                    </p>
+                    <div class="social-media-links">
+                        <a href="#" class="social-media-link" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-media-link" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-media-link" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-media-link" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-column-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link-item">
+                            <a href="#hero" class="footer-link">Home</a>
+                        </li>
+                        <li class="footer-link-item">
+                            <a href="#about" class="footer-link">About</a>
+                        </li>
+                        <li class="footer-link-item">
+                            <a href="#features" class="footer-link">Features</a>
+                        </li>
+                        <li class="footer-link-item">
+                            <a href="#gallery" class="footer-link">Gallery</a>
+                        </li>
+                        <li class="footer-link-item">
+                            <a href="#contact" class="footer-link">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-column-title">Contact Info</h3>
+                    <ul class="contact-info">
+                        <li class="contact-info-item">
+                            <i class="contact-info-icon">📍</i>
+                            <span class="contact-info-text">123 Slow Street, Lagville, USA</span>
+                        </li>
+                        <li class="contact-info-item">
+                            <i class="contact-info-icon">📧</i>
+                            <span class="contact-info-text">slow@slowsite.test</span>
+                        </li>
+                        <li class="contact-info-item">
+                            <i class="contact-info-icon">📱</i>
+                            <span class="contact-info-text">+1 (555) SLOW-WEB</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-column-title">Newsletter</h3>
+                    <p class="footer-column-description">
+                        Subscribe to get updates on performance best practices (demo only).
+                    </p>
+                    <form class="newsletter-form">
+                        <input type="email" 
+                               class="newsletter-input" 
+                               placeholder="Your email"
+                               required>
+                        <button type="submit" class="newsletter-button">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="copyright-text">
+                    &copy; 2026 SlowSite. Built for educational purposes to demonstrate poor performance.
+                </p>
+                <ul class="footer-bottom-links">
+                    <li><a href="#" class="footer-bottom-link">Privacy Policy</a></li>
+                    <li><a href="#" class="footer-bottom-link">Terms of Service</a></li>
+                    <li><a href="#" class="footer-bottom-link">Accessibility</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Back to top button -->
+    <button class="back-to-top" aria-label="Back to top">
+        ↑
+    </button>
+    
+    <!-- 
+        PERFORMANCE ANTI-PATTERN #6: More blocking scripts at the bottom
+        While scripts at the bottom are better than in head, they're still synchronous
+        and should use async/defer for better performance
+    -->
+    <script>
+        // Additional inline script at bottom (still not ideal)
+        console.log('Page fully loaded!');
+        console.log('Total blocking time was significant due to all the render-blocking resources!');
+        
+        // Log performance metrics
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                if (window.performance && window.performance.timing) {
+                    var perfData = window.performance.timing;
+                    var loadTime = perfData.loadEventEnd - perfData.navigationStart;
+                    console.log('='.repeat(60));
+                    console.log('PERFORMANCE METRICS (Intentionally Poor)');
+                    console.log('='.repeat(60));
+                    console.log('Total Page Load Time:', loadTime, 'ms');
+                    console.log('DOM Content Loaded:', perfData.domContentLoadedEventEnd - perfData.navigationStart, 'ms');
+                    console.log('='.repeat(60));
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
