@@ -1,253 +1,89 @@
-# Performance Test Website
+# Web Performance Testing Exercise
 
-A deliberately poor-performing single-page website designed for web performance testing, education, and optimization practice.
+A single-page website designed for web performance analysis and optimization practice.
 
-## Purpose
+## Setup Instructions
 
-This website is **intentionally built with multiple performance anti-patterns** to serve as:
-- A learning resource for web performance optimization
-- A test bed for performance analysis tools
-- An example of what NOT to do in production websites
-- A benchmark for testing performance monitoring solutions
+### Step 1: Download the Project
 
-## Performance Problems Included
+1. Go to the GitHub repository page
+2. Click the green **Code** button
+3. Select **Download ZIP**
+4. Extract the ZIP file to your computer
 
-### 1. Render-Blocking Resources ⛔
-- **7 separate CSS files** loaded synchronously in `<head>`
-- **6 separate JavaScript files** loaded in `<head>` without `async` or `defer`
-- Inline CSS and JavaScript in `<head>` adding more blocking content
-- Total blocking resources: 13+ files
+### Step 2: Copy to Your Week-10 Folder
 
-**Impact**: Delays First Contentful Paint (FCP) and blocks page rendering
+1. Locate the extracted folder contents
+2. Copy **all files and folders** into your `week-10` folder
+3. Your `week-10` folder should now contain:
+   - `index.html`
+   - `css/` folder
+   - `js/` folder
+   - `vendor/` folder
+   - `images/` folder
+   - `webfonts/` folder
+   - Other files (README, etc.)
 
-### 2. Unoptimized Images 🖼️
-- Hero image: 3200x1800 pixels (~500KB+) displayed much smaller
-- Gallery images: 6 images at 3000x2000 pixels each (~1MB+ each)
-- All images use **`loading="eager"`** (forces immediate loading)
-- Images scaled by browser instead of pre-sized
-- PNG format used for photos (should be JPG)
-- No modern formats (WebP, AVIF)
-- No responsive images (`srcset`)
+### Step 3: Open in VS Code
 
-**Impact**: Slow Largest Contentful Paint (LCP), wasted bandwidth, slow initial load
+1. Open Visual Studio Code
+2. Open your `week-10` folder in VS Code
+3. Make sure you have the **Live Server** extension installed
+   - If not: Go to Extensions (Ctrl+Shift+X) and search for "Live Server" by Ritwick Dey
 
-### 3. Unused Code 🗑️
-- `css/unused-styles.css`: Entire CSS file (blog, e-commerce, modal styles) never used
-- `js/unused-script.js`: Entire JavaScript file (shopping cart, video player, chat) never used
-- Large portions of vendor libraries unused
+### Step 4: Start Live Server
 
-**Impact**: Wasted bandwidth, increased parse time, slower page load
+1. Right-click on `index.html` in VS Code
+2. Select **Open with Live Server**
+3. Your browser should open automatically to `http://127.0.0.1:5500`
 
-### 4. Excessive HTTP Requests 🌐
-- 13+ separate resource requests instead of bundling
-- CSS files not concatenated
-- JavaScript files not concatenated
-- No CDN usage (third-party libraries served locally)
+## Testing Performance with Lighthouse
 
-**Impact**: Increased latency, more round trips, slower load on high-latency connections
+### Step 1: Open Chrome DevTools
 
-### 5. Unminified Resources 📝
-- All custom CSS files are verbose with comments and whitespace
-- All custom JavaScript files are verbose with extensive logging
-- Variable names are overly descriptive
-- jQuery: 278KB unminified (vs ~30KB minified gzipped)
-- Bootstrap: 274KB unminified CSS
+1. With the website open in **Chrome**, press `F12` (or right-click and select "Inspect")
+2. In DevTools, click the **Lighthouse** tab
+   - If you don't see it, click the `>>` icon and select Lighthouse from the dropdown
 
-**Impact**: Larger file sizes, slower download times, increased parse time
+### Step 2: Run Lighthouse Audit
 
-### 6. No Asset Optimization 🚫
-- No compression (Gzip/Brotli)
-- No code splitting
-- No tree shaking
-- No lazy loading (all resources loaded eagerly)
-- No resource hints (`preload`, `prefetch`, `dns-prefetch`)
+1. In the Lighthouse tab, make sure these options are selected:
+   - Mode: **Navigation**
+   - Categories: Check **Performance** (you can check others too)
+   - Device: **Desktop** or **Mobile** (try both!)
+2. Click the **Analyze page load** button
+3. Wait for the audit to complete (30-60 seconds)
 
-**Impact**: Poor performance scores across all metrics
+### Step 3: Review the Results
 
-## Project Structure
+Look at the Performance score and examine the results. Some things to explore:
 
-```
-web-performance/
-├── index.html              # Main HTML file with all performance issues
-├── css/
-│   ├── styles.css          # Main styles (unminified)
-│   ├── header.css          # Header-specific styles (unminified)
-│   ├── footer.css          # Footer-specific styles (unminified)
-│   ├── animations.css      # Animation styles (unminified)
-│   └── unused-styles.css   # UNUSED CSS (complete waste)
-├── js/
-│   ├── main.js             # Main JavaScript (unminified)
-│   ├── utils.js            # Utility functions (unminified, many unused)
-│   ├── carousel.js         # Carousel code (UNUSED on this page!)
-│   ├── analytics.js        # Fake analytics (unminified)
-│   └── unused-script.js    # UNUSED JavaScript (complete waste)
-├── vendor/
-│   ├── jquery.js           # jQuery 3.7.1 unminified (278KB)
-│   ├── bootstrap.css       # Bootstrap 5.3.0 unminified (274KB)
-│   └── font-awesome.css    # Font Awesome 6.4.0 (136KB)
-├── images/
-│   ├── hero.jpg            # Oversized hero image (3200x1800)
-│   ├── gallery-1.png       # Oversized gallery image (3000x2000)
-│   ├── gallery-2.png       # Oversized gallery image (3000x2000)
-│   ├── gallery-3.png       # Oversized gallery image (3000x2000)
-│   ├── gallery-4.png       # Oversized gallery image (3000x2000)
-│   ├── gallery-5.png       # Oversized gallery image (3000x2000)
-│   ├── gallery-6.png       # Oversized gallery image (3000x2000)
-│   └── README.txt          # Instructions for generating images
-├── generate_images.py      # Python script to generate test images (requires Pillow)
-├── create_images.sh        # Shell script to create images using ffmpeg
-└── README.md               # This file
-```
+- What is the overall Performance score?
+- What metrics are highlighted in red or orange?
+- What opportunities does Lighthouse suggest?
+- What diagnostics are shown?
+- How large is the total page size?
 
-## Setup and Usage
+### Additional DevTools Tabs to Explore
 
-### Option 1: Use as-is (without real images)
-The website will work immediately but images will be broken/placeholder files. This still demonstrates most performance issues.
+- **Network Tab**: See what resources are loading and how long they take
+- **Performance Tab**: Record and analyze page load performance
+- **Coverage Tab**: See how much code is actually being used
 
-```bash
-# Clone or navigate to the directory
-cd web-performance
+## Your Task
 
-# Open in a browser
-python3 -m http.server 8000
-# or
-npx serve
+Use the Lighthouse report and Chrome DevTools to identify performance issues with this website. Then, **fix as many problems as you can** to improve the performance score. Make changes to the code and re-run Lighthouse to see your improvements.
 
-# Visit http://localhost:8000
-```
+## Questions to Consider
 
-### Option 2: Generate images with Python (recommended)
-Requires Python 3 and Pillow library.
+- How many HTTP requests does the page make?
+- What is the total size of resources loaded?
+- Are there any render-blocking resources?
+- How are images being handled?
+- Is all the CSS and JavaScript being used?
+- What are the Core Web Vitals scores?
 
-```bash
-# Install Pillow (in a virtual environment)
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install Pillow
-
-# Generate images
-python3 generate_images.py
-
-# Start server and open in browser
-python3 -m http.server 8000
-```
-
-### Option 3: Generate images with ffmpeg
-Requires ffmpeg to be installed.
-
-```bash
-# Install ffmpeg (Ubuntu/Debian)
-sudo apt install ffmpeg
-
-# Run the generation script
-bash create_images.sh
-
-# Start server
-python3 -m http.server 8000
-```
-
-### Option 4: Use real images
-Download large images (3000x2000+) from stock photo sites and place them in the `images/` directory:
-- `hero.jpg` (3200x1800 recommended)
-- `gallery-1.png` through `gallery-6.png` (3000x2000 recommended)
-
-Save photos as PNG instead of JPG to worsen performance.
-
-## Testing Performance
-
-### Browser DevTools
-
-1. **Network Tab**
-   - See 20+ resources loading
-   - Observe large file sizes
-   - Note blocking resources
-
-2. **Performance Tab**
-   - Record a page load
-   - See render-blocking in the timeline
-   - Observe long tasks
-
-3. **Coverage Tab** (Chrome)
-   - Shows unused CSS and JavaScript
-   - Should find 50%+ unused code
-
-4. **Lighthouse**
-   - Run an audit
-   - Performance score should be < 50
-   - See specific recommendations
-
-### Expected Lighthouse Issues
-
-- ❌ Eliminate render-blocking resources
-- ❌ Properly size images
-- ❌ Serve images in next-gen formats
-- ❌ Remove unused CSS
-- ❌ Remove unused JavaScript
-- ❌ Minify CSS
-- ❌ Minify JavaScript
-- ❌ Reduce initial server response time
-- ❌ Avoid enormous network payloads
-- ❌ Serve static assets with an efficient cache policy
-
-### Performance Metrics (Expected Poor)
-
-- **FCP (First Contentful Paint)**: > 3s
-- **LCP (Largest Contentful Paint)**: > 4s
-- **TBT (Total Blocking Time)**: > 600ms
-- **CLS (Cumulative Layout Shift)**: Variable
-- **SI (Speed Index)**: > 5s
-- **TTI (Time to Interactive)**: > 5s
-
-## How to Fix (Learning Exercise)
-
-Try optimizing this website step by step:
-
-1. **Images**
-   - Resize to actual display size
-   - Convert to appropriate formats (JPG for photos)
-   - Add WebP/AVIF versions
-   - Implement `loading="lazy"` for below-fold images
-   - Add `srcset` for responsive images
-
-2. **CSS**
-   - Remove unused CSS files
-   - Concatenate CSS into one file
-   - Minify CSS
-   - Consider critical CSS inline, defer non-critical
-
-3. **JavaScript**
-   - Remove unused JavaScript files
-   - Concatenate JavaScript
-   - Minify JavaScript
-   - Add `async` or `defer` attributes
-   - Consider code splitting
-
-4. **HTTP Requests**
-   - Bundle resources
-   - Use CDN for third-party libraries
-   - Enable HTTP/2
-   - Add resource hints
-
-5. **Compression**
-   - Enable Gzip/Brotli compression
-   - Optimize asset delivery
-
-## Educational Use
-
-This project is perfect for:
-- **Training workshops** on web performance
-- **Before/after demonstrations** of optimization techniques
-- **Testing performance tools** and monitoring services
-- **Learning browser DevTools** and performance analysis
-- **Practicing optimization** skills
-
-## Contributing
-
-This is an educational resource. If you have ideas for additional performance anti-patterns to include, feel free to suggest them!
-
-## License
-
-This project is released into the public domain for educational purposes. Use it however you like!
+Good luck with your performance analysis!
 
 ## Credits
 

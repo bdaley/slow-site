@@ -3,27 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Performance Test Website - Intentionally Slow</title>
-    <meta name="description" content="A website intentionally built with multiple performance problems for testing and education purposes.">
+    <title>SlowSite - Modern Business Solutions</title>
+    <meta name="description" content="SlowSite provides comprehensive business solutions and services for modern enterprises.">
     
-    <!-- 
-        PERFORMANCE ANTI-PATTERN #1: Multiple render-blocking CSS files in <head>
-        All CSS files loaded synchronously, blocking page rendering
-        Files are not minified and not concatenated
-    -->
+    <!-- CSS stylesheets -->
     <link rel="stylesheet" href="vendor/bootstrap.css">
     <link rel="stylesheet" href="vendor/font-awesome.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/unused-styles.css">  <!-- UNUSED! Wasting bandwidth -->
+    <link rel="stylesheet" href="css/unused-styles.css">
     
-    <!-- 
-        PERFORMANCE ANTI-PATTERN #2: Inline CSS in <head> (even more render blocking)
-    -->
+    <!-- Additional styles -->
     <style>
-        /* This inline CSS adds even more render-blocking content */
         * {
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
@@ -64,19 +57,15 @@
         }
     </style>
     
-    <!-- 
-        PERFORMANCE ANTI-PATTERN #3: Multiple render-blocking JavaScript files in <head>
-        WITHOUT async or defer attributes!
-        These block HTML parsing and DOM construction
-    -->
-    <script src="vendor/jquery.js"></script>  <!-- 278KB unminified! -->
+    <!-- JavaScript files -->
+    <script src="vendor/jquery.js"></script>
     <script src="js/utils.js"></script>
-    <script src="js/carousel.js"></script>  <!-- NOT EVEN USED ON THIS PAGE! -->
+    <script src="js/carousel.js"></script>
     <script src="js/analytics.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/unused-script.js"></script>  <!-- UNUSED! Pure waste -->
+    <script src="js/unused-script.js"></script>
     
-    <!-- Even more inline blocking JavaScript -->
+    <!-- Initialization script -->
     <script>
         // This script runs before the page loads, blocking rendering
         console.log('Head script executing - blocking page render!');
@@ -139,14 +128,9 @@
         </div>
     </header>
     
-    <!-- 
-        HERO SECTION
-        PERFORMANCE ANTI-PATTERN #4: Large hero image with loading="eager"
-        Image is 3200x1800 but displayed much smaller
-        Blocks initial page rendering
-    -->
+    <!-- Hero Section -->
     <section id="hero" class="hero-section">
-        <img src="images/micheile-henderson-DlYmgwb_9Gw-unsplash.jpg" 
+        <img src="images/hero.jpg" 
              alt="Hero background" 
              loading="eager"
              width="3200" 
@@ -155,7 +139,7 @@
         
         <div class="hero-content">
             <h1 class="hero-title animated fade-in-up">Welcome to SlowSite</h1>
-            <p class="hero-subtitle animated fade-in-up delay-1">The Slowest Website on the Internet</p>
+            <p class="hero-subtitle animated fade-in-up delay-1">Modern Business Solutions for the Digital Age</p>
             <a href="#about" class="hero-button animated fade-in-up delay-2">Learn More</a>
         </div>
     </section>
@@ -165,21 +149,21 @@
     -->
     <section id="about" class="about-section section">
         <div class="container">
-            <h2 class="section-title animated fade-in">About This Website</h2>
+            <h2 class="section-title animated fade-in">About SlowSite</h2>
             <div class="about-content">
                 <p class="about-text animated fade-in-up">
-                    This website is intentionally designed to demonstrate multiple web performance anti-patterns.
-                    It includes render-blocking resources, unoptimized images, excessive HTTP requests, 
-                    and unused code - all common issues that slow down real websites.
+                    SlowSite is a modern business solutions provider specializing in comprehensive
+                    enterprise services. We offer cutting-edge technology solutions designed to meet
+                    the evolving needs of today's businesses.
                 </p>
                 <p class="about-text animated fade-in-up delay-1">
-                    By studying this site's poor performance, developers can learn to identify and fix
-                    similar issues in their own projects. Every performance problem here is deliberate
-                    and serves as an example of what NOT to do in production websites.
+                    Our team of experts delivers innovative solutions across multiple industries,
+                    helping organizations achieve their digital transformation goals with state-of-the-art
+                    technology and best-in-class service.
                 </p>
                 <p class="about-text animated fade-in-up delay-2">
-                    Use browser DevTools to inspect the Network tab, Performance tab, and Lighthouse
-                    to see all the performance issues in action!
+                    With a focus on quality, reliability, and customer satisfaction, we're committed
+                    to delivering exceptional results that drive business success.
                 </p>
             </div>
         </div>
@@ -190,77 +174,72 @@
     -->
     <section id="features" class="features-section section">
         <div class="container">
-            <h2 class="section-title animated fade-in">Performance Problems Featured</h2>
+            <h2 class="section-title animated fade-in">Our Key Features</h2>
             
             <div class="features-grid">
                 <div class="feature-card animated fade-in-up">
                     <div class="feature-icon">🐌</div>
-                    <h3 class="feature-title">Render-Blocking Resources</h3>
+                    <h3 class="feature-title">Comprehensive Solutions</h3>
                     <p class="feature-description">
-                        Multiple CSS and JavaScript files loaded synchronously in the head,
-                        blocking page rendering and delaying First Contentful Paint.
+                        We provide complete, full-featured solutions with extensive resources
+                        and comprehensive libraries to meet all your business needs.
                     </p>
                 </div>
                 
                 <div class="feature-card animated fade-in-up delay-1">
                     <div class="feature-icon">🖼️</div>
-                    <h3 class="feature-title">Unoptimized Images</h3>
+                    <h3 class="feature-title">Visual Excellence</h3>
                     <p class="feature-description">
-                        Oversized images in wrong formats, scaled by the browser, with loading="eager"
-                        and no modern format alternatives like WebP or AVIF.
+                        High-resolution imagery and premium visual content that showcases
+                        your brand with stunning clarity and detail.
                     </p>
                 </div>
                 
                 <div class="feature-card animated fade-in-up delay-2">
                     <div class="feature-icon">📦</div>
-                    <h3 class="feature-title">Unused Code</h3>
+                    <h3 class="feature-title">Feature-Rich Platform</h3>
                     <p class="feature-description">
-                        Entire CSS and JavaScript files loaded but not used, wasting bandwidth
-                        and increasing parsing time without providing any value.
+                        Extensive functionality with everything you might need, including
+                        advanced tools and comprehensive capabilities.
                     </p>
                 </div>
                 
                 <div class="feature-card animated fade-in-up">
                     <div class="feature-icon">🔗</div>
-                    <h3 class="feature-title">Excessive HTTP Requests</h3>
+                    <h3 class="feature-title">Modular Architecture</h3>
                     <p class="feature-description">
-                        10+ separate CSS and JavaScript files instead of bundling, creating
-                        overhead with multiple round trips to the server.
+                        Flexible, component-based design with multiple specialized modules
+                        working together for maximum flexibility.
                     </p>
                 </div>
                 
                 <div class="feature-card animated fade-in-up delay-1">
                     <div class="feature-icon">📝</div>
-                    <h3 class="feature-title">Unminified Resources</h3>
+                    <h3 class="feature-title">Readable Code Base</h3>
                     <p class="feature-description">
-                        All CSS and JavaScript files are verbose and unminified, with extensive
-                        comments and whitespace that increase file sizes unnecessarily.
+                        Clean, well-documented code with detailed comments and clear
+                        formatting for easy understanding and maintenance.
                     </p>
                 </div>
                 
                 <div class="feature-card animated fade-in-up delay-2">
                     <div class="feature-icon">🌐</div>
-                    <h3 class="feature-title">No CDN</h3>
+                    <h3 class="feature-title">Self-Hosted Resources</h3>
                     <p class="feature-description">
-                        Third-party libraries like jQuery and Bootstrap served locally instead
-                        of from CDNs, missing caching benefits and geographic distribution.
+                        All resources hosted locally for complete control and independence
+                        from external content delivery networks.
                     </p>
                 </div>
             </div>
         </div>
     </section>
     
-    <!-- 
-        GALLERY SECTION
-        PERFORMANCE ANTI-PATTERN #5: Multiple large images with loading="eager"
-        All images are PNG format (wrong for photos!) and oversized (3000x2000)
-    -->
+    <!-- Gallery Section -->
     <section id="gallery" class="gallery-section section">
         <div class="container">
             <h2 class="section-title animated fade-in">Image Gallery</h2>
             <p style="text-align: center; margin-bottom: 2rem; color: #666;">
-                These images are all 3000x2000 pixels (9MB+ combined), saved as PNG instead of JPG,
-                and loaded with loading="eager" even though they're below the fold!
+                Explore our collection of high-quality images showcasing our work and services.
             </p>
             
             <div class="gallery-grid">
@@ -393,8 +372,8 @@
                 <div class="footer-column">
                     <h3 class="footer-column-title">About SlowSite</h3>
                     <p class="footer-column-description">
-                        An educational website demonstrating common web performance anti-patterns.
-                        Built intentionally slow for testing and learning purposes.
+                        A comprehensive business solutions provider dedicated to delivering
+                        exceptional service and innovative technology solutions.
                     </p>
                     <div class="social-media-links">
                         <a href="#" class="social-media-link" aria-label="Facebook">
@@ -468,7 +447,7 @@
             
             <div class="footer-bottom">
                 <p class="copyright-text">
-                    &copy; 2026 SlowSite. Built for educational purposes to demonstrate poor performance.
+                    &copy; 2026 SlowSite. All rights reserved.
                 </p>
                 <ul class="footer-bottom-links">
                     <li><a href="#" class="footer-bottom-link">Privacy Policy</a></li>
@@ -484,15 +463,10 @@
         ↑
     </button>
     
-    <!-- 
-        PERFORMANCE ANTI-PATTERN #6: More blocking scripts at the bottom
-        While scripts at the bottom are better than in head, they're still synchronous
-        and should use async/defer for better performance
-    -->
+    <!-- Additional Scripts -->
     <script>
-        // Additional inline script at bottom (still not ideal)
+        // Page load complete
         console.log('Page fully loaded!');
-        console.log('Total blocking time was significant due to all the render-blocking resources!');
         
         // Log performance metrics
         window.addEventListener('load', function() {
@@ -501,7 +475,7 @@
                     var perfData = window.performance.timing;
                     var loadTime = perfData.loadEventEnd - perfData.navigationStart;
                     console.log('='.repeat(60));
-                    console.log('PERFORMANCE METRICS (Intentionally Poor)');
+                    console.log('PERFORMANCE METRICS');
                     console.log('='.repeat(60));
                     console.log('Total Page Load Time:', loadTime, 'ms');
                     console.log('DOM Content Loaded:', perfData.domContentLoadedEventEnd - perfData.navigationStart, 'ms');
